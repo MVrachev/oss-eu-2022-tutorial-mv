@@ -1,0 +1,30 @@
+# We chose "hatcling" as our build system of choise as it supports reproducable
+# builds and is recommended by the "Packaging Python Projects" tutorial by PyPA.
+[build-system]
+# We pin the hatchling version for reproducibility reasons.
+# Keep in mind that the GitHub dependabot doesn't recognize hatchling as a
+# dependency and it needs to be manually updated.
+# See https://github.com/dependabot/dependabot-core/issues/3290
+requires = ["hatchling==1.8.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "oss-eu-2022-tutorial-mv"
+version = "0.0.1"
+authors = [
+  { name="Martin Vrachev", email="mvrachev@vmware.com" },
+]
+description = """Package created for the OSS Europe 2022 tutorial on Secure
+Python packaging & release using Continuous Deployment"""
+readme = "README.md"
+license = { text="MIT" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/MVrachev/oss-eu-2022-tutorial-mv"
+"Bug Tracker" = "https://github.com/MVrachev/oss-eu-2022-tutorial-mv/issues"
