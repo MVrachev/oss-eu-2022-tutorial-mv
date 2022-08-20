@@ -1,0 +1,31 @@
+# We chose "hatchling" as our build system of choice as it supports reproducible
+# builds and is recommended by the "Packaging Python Projects" tutorial by PyPA.
+[build-system]
+# We pin the hatchling version for reproducibility reasons.
+requires = ["hatchling==1.8.0"]
+build-backend = "hatchling.build"
+
+# Specify which files and directories should be included in the build artifacts.
+# This is done to prevent adding unnecessary files to the releases.
+[tool.hatch.build.targets.sdist]
+include = [ "/src" ]
+
+[project]
+name = "oss_eu_2022_tutorial_mv"
+version = "0.0.1"
+authors = [
+  { name="Martin Vrachev", email="mvrachev@vmware.com" },
+]
+description = "Package created for the OSS Europe 2022 tutorial on Secure Python packaging & release using GitHub Continuous Deployment"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/MVrachev/oss-eu-2022-tutorial-mv"
+"Bug Tracker" = "https://github.com/MVrachev/oss-eu-2022-tutorial-mv/issues"
