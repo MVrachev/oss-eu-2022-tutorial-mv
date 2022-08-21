@@ -42,3 +42,21 @@ the version you are going to use. **This is important for reproducibility reason
 you will describe which files and folders will be included in the build artifacts.
 An example of all of those changes is included in the commit containing this step.
 9. Add a short explanation to your README.
+
+### Upload the project to Test PyPI
+
+At this stage, you are going to build your python project and upload it to Test PyPI.
+Here are the steps you need to follow:
+1. Add a `requirements-build.txt` file containing the requirements needed to
+build and upload our project. You can see an example in the commit containing
+that change.
+2. Install the build dependencies from `requirements-build.txt` with `pip install -r requirements-build.txt`.
+3. Install `twine` with `pip install --upgrade twine`.
+4. Generate distribution archives by building your project with `python3 -m build`
+It's possible that you will have to install `virtualenv` with `pip install virtualenv`.
+5. Add the `dist` directory to `.gitignore`.
+6. Create an account on [Test PyPI](https://test.pypi.org/).
+7. Upload your project to Test PyPI with `python3 -m twine upload --repository testpypi dist/*`
+8. You can verify that your project was indeed uploaded to Test PyPI by looking
+into your profile and installing it with:
+`python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps <PROJECT_NAME>`.

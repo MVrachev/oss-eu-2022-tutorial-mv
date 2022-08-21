@@ -1,0 +1,2 @@
+# Pin all dependencies for reproducibility reasons.
+build==0.8.0
