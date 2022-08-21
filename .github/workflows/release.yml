@@ -1,0 +1,16 @@
+name: Initial workflow
+
+# "on" specifies the workflow trigger.
+# Automatic trigger which will be activated on a pushed commit which has a tag
+# attached to it with a name starting with "v".
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initial echo
+        run: echo "Initialize"

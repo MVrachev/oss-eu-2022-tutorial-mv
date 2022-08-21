@@ -60,3 +60,29 @@ It's possible that you will have to install `virtualenv` with `pip install virtu
 8. You can verify that your project was indeed uploaded to Test PyPI by looking
 into your profile and installing it with:
 `python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps <PROJECT_NAME>`.
+
+### Secure Python packaging and release using GitHub Continuous Deployment
+
+This is the final stage where a couple of experiments will be performed and upon
+completion you will have a method to securely build and release your project
+through GitHub Continuous Deployment. Here are the steps you will need to do:
+1. You will have to generate a token responsible exclusively for your new project.
+This is done so that you don't have to share your Test PyPI password with
+GitHub. You can generate a new token by going on Test PyPI and clicking
+`<YOUR_USERNAME>` -> `Your Projects` -> `left of your project name "Manage"` -> `Settings`
+-> `Generate token for <PROJECT_NAME>`. You want to make sure you click on the `Scope`
+menu that the token is responsible only for your project.
+2. When you generate the new token **SAVE** it somewhere as it will be needed later.
+3. Create the following directories: `.github/workflows`.
+4. Inside `.github/workflows` create the `release.yml` file.
+5. Add your first GitHub job inside `release.yml`. An example is available in
+the commit containing this step.
+6. To activate the workflow run you will have to make a release. You can do this
+by updating the `version` field in `pyproject.toml`.
+7. Tag your local project with git tag `<TAG_NAME>" -m <TAG_MESSAGE>` where
+`TAG_NAME` MUST start with a `v`.
+8. Push the changes to GitHub.
+9. Push the tags by adding by running `git push` and adding the `--tags` option.
+10. View the last workflow that was automatically triggered by going to your project
+GitHub page and the click `Actions` -> click the name of your workflow and verify
+that the output is as expected.
