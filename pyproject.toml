@@ -8,6 +8,11 @@
 requires = ["hatchling==1.8.0"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.sdist]
+# Specify files from which directory should be included in the build artifacts.
+# This is done to prevent adding unnecessary files to the releases.
+include = [ "/src" ]
+
 [project]
 name = "oss-eu-2022-tutorial-mv"
 version = "0.0.1"

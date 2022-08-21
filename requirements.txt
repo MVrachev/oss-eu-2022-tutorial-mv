@@ -1,0 +1,7 @@
+# This file won't be included in the distribution files published on Test PyPI
+# meaning there is no chance of the user installing any of these dependencies
+# through Test PyPI by accident.
+
+# Pin all dependencies for reproducibility reasons.
+build==0.8.0
+twine==4.0.1

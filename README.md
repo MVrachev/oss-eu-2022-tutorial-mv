@@ -49,3 +49,20 @@ better on Test PyPI.
 the version you are going to use. **This is important for reproducibility reasons.**
 9.  Add a short explanation to your README and if you haven't yet commit your
 changes.
+
+### Upload the project to Test PyPI
+
+At this stage you are going to build your python project and upload it to Test PyPI.
+Here are the steps you should follow at this stage of the tutorial:
+1. Add a `requirements.txt` file containing the requirements needed to build
+and upload our project (you can see its content in the commit containing that
+change).
+2. Install the dependencies from `requirements.txt` with `pip install -r requirements.txt`
+3. Generate distribution archives by building your project with `python3 -m build`
+It's possible that it will require you to install `virtualenv`.
+4. Add the `dist` directory to `.gitignore`.
+5. Create an account on [Test PyPI](https://test.pypi.org/).
+6. Upload your project to Test PyPI with `python3 -m twine upload --repository testpypi dist/*`
+7. You can verify that your project was indeed uploaded to Test PyPI by looking
+into your profile and you can also install it with the command
+`python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps <PROJECT_NAME>`.
