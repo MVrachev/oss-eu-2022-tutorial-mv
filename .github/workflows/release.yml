@@ -1,0 +1,13 @@
+name: GitHub release workflow example
+
+# "on" specifies the workflow trigger.
+on:
+  # "workflow_dispatch" means that a manual trigger is required to run this workflow
+  workflow_dispatch:
+
+jobs:
+  build: # name of that particular step in the job, it could be a custom string
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initial echo
+        run: echo "Initialize" # command that will be run when executing this step.

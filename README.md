@@ -66,3 +66,24 @@ It's possible that it will require you to install `virtualenv`.
 7. You can verify that your project was indeed uploaded to Test PyPI by looking
 into your profile and you can also install it with the command
 `python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps <PROJECT_NAME>`.
+
+### Secure Python packaging and release using GitHub Continuous Deployment
+
+This is the final stage where a couple of experiments will be performed to showcase
+the different methods you can use to securely build and release your project
+through GitHub Continuous Deployment.
+Here are the steps you will need to do:
+1. You will have to generate a token responsible exclusively for your new project.
+This is done so that you don't have to share your Test PyPI password with
+GitHub. You can generate a new token by going on Test PyPI and clicking
+`<YOUR_USERNAME>` -> `Your Projects` -> `left of your project name "Manage"` -> `Settings`
+-> `Generate token for <PROJECT_NAME>`. You want to make sure you click on the `Scope`
+menu that the token is responsible only for your project.
+2. When you generate the new token **SAVE** it somewhere as it will be needed later.
+3. Create the following directories: `.github/workflows`.
+4. Inside `.github/workflows` create `release.yml`
+5. Add your first workflow (the content is inside the commit of these changes).
+6. On the GitHub page of your project go to `Actions` and below you can see the
+`Workflows` menu. There you will see the `GitHub release workflow example` workflow
+and when you click it on the right you can click `Run workflow` which will trigger
+the workflow.
