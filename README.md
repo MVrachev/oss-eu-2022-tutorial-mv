@@ -94,3 +94,31 @@ in the `release.yml` are in the commit containing this change.
 click the `List shas` step. Next build your project locally, list the sha256 sums
 of the newly generated build files and verify that locally listed sha sums are
 the same sha256 sums as the listed on GitHub.
+9. Now you should create an `environment` for your project. You can do this by
+going to your project's GitHub page, clicking `Settings` -> `Environments`
+-> `New environment`. Give whatever name you want to it.
+10. Add a secret to the environment. You have to add the newly created token
+responsible for your project which you created at `Upload the project to Test PyPI`
+stage step `1`. The name of that secret has strict rules, so I suggest you just
+call it `PYPI_TOKEN`. By making the secret bound to the environment this means
+that the access rules to that secret are limited by the environment and cannot
+be easily retrieved.
+11. On the same page under `Environment protection rules` click `Required
+reviewers and in the text field add your GitHub username and click
+`Save protection rules`. This will make sure that before a GitHub workflow has
+access to your environmental secrets you have to manually approve that.
+12. In the `release.yml` file add a new step in the `build` job making the output
+from the workflow available to other jobs. The changes in the `release.yml` can
+be seen in the commit containing that change.
+13. Add a new `upload` job with steps to `Fetch build artifacts` and
+`Publish on PyPi`. The changes in the `release.yml` can
+be seen in the commit containing that change.
+14. Make a new release by updating the project version in `pyproject.toml`.
+15. Tag your local project with `git tag "<TAG_NAME>" -m <TAG_MESSAGE>"`
+16. Push the changes to GitHub. Don't forget to add `--tags` to the push command
+otherwise the tag won't appear on GitHub.
+17. Run the workflow manually (as described in step 6), verify sha256 sums (as
+described in step 8) and if everything is correct go to your project's GitHub page
+`Actions` -> choose the last workflow run -> you will see that `upload` is orange, click it ->
+choose `Review pending deployments` -> click `Release` -> click `Approve and deploy`.
+Now you can verify everything is as expected by going to [Test PyPI](https://test.pypi.org/).

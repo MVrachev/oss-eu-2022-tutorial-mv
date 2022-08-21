@@ -35,3 +35,32 @@ jobs:
       # built on GitHub matches what was built locally.
       - name: List shas
         run: sha256sum dist/*
+
+      # Takes the "dist" directory and stores it as "build-artifacts", so that
+      # in the next job we can access those files. Pass data between 2 steps.
+      - name: Store build artifacts
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
+        with:
+          name: build-artifacts # name in a database
+          path: dist
+
+  upload:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: release
+    steps:
+      # Download build artifacts from the "build-artifacts" directory.
+      - name: Fetch build artifacts
+        uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741
+        with:
+          name: build-artifacts
+          path: dist # this is the output directory
+
+      # This action is not officially released by GitHub in a contrast to all others.
+      # The reason is that the GitHub official action alternative is not well supported.
+      - name: Publish binary wheel and source tarball on PyPI
+        uses: pypa/gh-action-pypi-publish@717ba43cfbb0387f6ce311b169a825772f54d295
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
