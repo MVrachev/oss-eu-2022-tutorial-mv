@@ -87,3 +87,10 @@ menu that the token is responsible only for your project.
 `Workflows` menu. There you will see the `GitHub release workflow example` workflow
 and when you click it on the right you can click `Run workflow` which will trigger
 the workflow.
+7. Now we will add steps to setup python, install our build dependency, build
+our project and list the sha256 sums of the resulted artifacts. The new changes
+in the `release.yml` are in the commit containing this change.
+8. Again run the workflow (as we did on step 6). Then click the `build` job and
+click the `List shas` step. Next build your project locally, list the sha256 sums
+of the newly generated build files and verify that locally listed sha sums are
+the same sha256 sums as the listed on GitHub.
