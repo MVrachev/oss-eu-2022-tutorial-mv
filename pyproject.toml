@@ -1,4 +1,4 @@
-# We chose "hatcling" as our build system of choise as it supports reproducable
+# We chose "hatchling" as our build system of choice as it supports reproducible
 # builds and is recommended by the "Packaging Python Projects" tutorial by PyPA.
 [build-system]
 # We pin the hatchling version for reproducibility reasons.
