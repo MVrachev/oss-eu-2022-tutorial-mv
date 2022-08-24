@@ -1,4 +1,4 @@
-name: Initial workflow
+name: Build job finished
 
 # "on" specifies the workflow trigger.
 # Automatic trigger which will be activated on a pushed commit which has a tag
@@ -14,3 +14,27 @@ jobs:
     steps:
       - name: Initial echo
         run: echo "Initialize"
+
+      # NOTE: We are using particular commits of all actions to achieve
+      # reproducibility.
+
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+
+      # NOTE: Use the same python version here as the one you have chosen locally
+      # in your virtual environment. This is important for reproducibility.
+      - name: Set up Python
+        uses: actions/setup-python@c4e89fac7e8767b327bbad6cb4d859eda999cf08
+        with:
+          python-version: '3.9'
+
+      - name: Install build dependency
+        run: python3 -m pip install -r requirements-build.txt
+
+      - name: Build
+        run: python3 -m build
+
+      # We are listing sha256 sums of the build files to make sure that what was
+      # built on GitHub matches what was built locally.
+      - name: List shas
+        run: sha256sum dist/*

@@ -86,3 +86,11 @@ by updating the `version` field in `pyproject.toml`.
 10. View the last workflow that was automatically triggered by going to your project
 GitHub page and the click `Actions` -> click the name of your workflow and verify
 that the output is as expected.
+11. You will add steps to setup python, install your build dependencies, build
+your project and list the sha256 sums of the resulting artifacts. The new changes
+are in the commit containing this change.
+12. Make a new release and push it by following steps `6` to `9`.
+13. View the last workflow that was automatically triggered. Then click on the
+`build` job and then click the `List shas` step. Next build your project locally,
+list the sha256 sums of the newly generated build files and verify that locally
+listed sha256 sums are the same sha256 sums as the ones listed on GitHub.
