@@ -23,3 +23,6 @@ timezone. Here is a link to the tutorial event: https://sched.co/15z5z
 
 If you want to follow this tutorial by yourself or revise any of the steps after
 the event you can follow the instructions in the [TUTORIAL.md](https://github.com/MVrachev/oss-eu-2022-tutorial-mv/blob/master/TUTORIAL.md) file.
+
+This tutorial was developed with the great help of [Jussi Kukkonen](https://github.com/jku)
+and [Joshua Lock](https://github.com/joshuagl)!

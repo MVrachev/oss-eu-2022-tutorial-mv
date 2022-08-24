@@ -125,3 +125,8 @@ the sha256 sums (as described in step `12`) and if everything is correct at your
 workflow page you will see that `upload` is orange, click it -> choose
 `Review pending deployments` -> click `Release` -> click `Approve and deploy`.
 Now you can verify everything is as expected by going to [Test PyPI](https://test.pypi.org/).
+
+This is all I wanted to show you in this tutorial!
+
+This tutorial was developed with the great help of [Jussi Kukkonen](https://github.com/jku)
+and [Joshua Lock](https://github.com/joshuagl)!
