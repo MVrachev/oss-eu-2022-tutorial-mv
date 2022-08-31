@@ -12,7 +12,7 @@ include = [ "/src", "/requirements-build.txt" ]
 
 [project]
 name = "oss_eu_2022_tutorial_mv"
-version = "0.0.10"
+version = "0.0.12"
 
 authors = [
   { name="Martin Vrachev", email="mvrachev@vmware.com" },
