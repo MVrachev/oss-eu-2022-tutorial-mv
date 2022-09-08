@@ -1,0 +1,85 @@
+#!/usr/bin/env python
+
+import glob
+import os
+import shutil
+import subprocess
+import sys
+from tempfile import TemporaryDirectory
+from typing import List, Optional
+
+# unused: will be called with subprocess
+import sigstore
+
+ORIG_DIR = os.path.dirname(os.path.abspath(__file__))
+SIG_DIR = f"{ORIG_DIR}/signatures"
+DEFAULT_DIST_DIR = f"{ORIG_DIR}/dist"
+
+ISSUER = "https://github.com/login/oauth"
+PYPI_PROJECT = "oss_eu_2022_tutorial_mv"
+
+def _run(cmd: List[str]):
+    if os.environ.get('DEBUG'):
+        subprocess.run(cmd, check=True)
+    else:
+        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+
+def _find_artifacts(version: str, dist_dir: str) -> List[str]:
+    """Return artifact filenames for 'version' in 'dist_dir'"""
+    artifacts = []
+    artifacts.extend(glob.glob(f"{dist_dir}/{PYPI_PROJECT}-{version}.tar.gz"))
+    artifacts.extend(glob.glob(f"{dist_dir}/{PYPI_PROJECT}-{version}-*.whl"))
+    return [os.path.basename(artifact) for artifact in artifacts]
+
+def _sign(version: str, dist_dir: str) -> Optional[str]:
+    artifacts = _find_artifacts(version, dist_dir)
+    if len(artifacts) != 2:
+        return f"Expected 2 artifacts for {version}, found {artifacts}"
+
+    cmd = ["python3", "-m", "sigstore", "sign"]
+    for artifact in artifacts:
+        cmd.append(f"{dist_dir}/{artifact}")
+    print("Signing (please login to sigstore with GitHub)...")
+    _run(cmd)
+    for artifact in artifacts:
+        os.replace(f"{dist_dir}/{artifact}.sig", f"{SIG_DIR}/{artifact}.sig")
+        os.replace(f"{dist_dir}/{artifact}.crt", f"{SIG_DIR}/{artifact}.crt")
+        print(f"Signed {artifact}")
+
+    print(f"✅ Signed release {version}")
+
+def _verify(version: str, dist_dir: str, identity: str) -> Optional[str]:
+    artifacts = _find_artifacts(version, dist_dir)
+    if len(artifacts) != 2:
+        return f"Expected 2 artifacts for {version}, found {artifacts}"
+
+    # Copy artifacts, certs and sigs to same directory so we can call sigstore once only
+    cmd = ["python3", "-m", "sigstore", "verify", "--cert-oidc-issuer", ISSUER, "--cert-email", identity]
+    with TemporaryDirectory() as tempdir:
+        for artifact in artifacts:
+            crt = f"{SIG_DIR}/{artifact}.crt"
+            sig = f"{SIG_DIR}/{artifact}.sig"
+            if (not os.path.exists(crt) or not os.path.exists(sig)):
+                return f"Could not find sig or cert for {artifact}"
+            shutil.copy(crt, tempdir)
+            shutil.copy(sig, tempdir)
+            shutil.copy(f"{dist_dir}/{artifact}", tempdir)
+            cmd.append(f"{tempdir}/{artifact}")
+            print(f"Verifying {artifact}...")
+        try:
+            _run(cmd)
+        except subprocess.CalledProcessError:
+            return f"No valid signatures found for {identity}"
+
+    print (f"✅ {version} release artifacts signed by {identity}")
+
+def main(args: List[str]) -> Optional[str]:
+    if args[0] == "sign" and len(args) == 2:
+        return _sign(args[1], DEFAULT_DIST_DIR)
+    elif args[0] == "verify" and len(args) == 3:
+        return _verify(args[1], DEFAULT_DIST_DIR, args[2])
+    else:
+        return f"Invalid arguments: expecting 'sign <version>' or 'verify <version> <email>'"
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

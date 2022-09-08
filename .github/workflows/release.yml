@@ -34,10 +34,10 @@ jobs:
       - name: Build
         run: python3 -m build
 
-      # We are listing sha256 sums of the build files to make sure that what was
-      # built on GitHub matches what was built locally.
-      - name: List shas
-        run: sha256sum dist/*
+      - name: Verify release signature
+        run: |
+          version=${GITHUB_REF#refs/tags/v}
+          ./release verify $version mvrachev@vmware.com
 
       # Takes the "dist" directory and stores it as "build-artifacts", so that
       # in the next job we can access those files. Pass data between 2 steps.

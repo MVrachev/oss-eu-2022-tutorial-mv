@@ -8,11 +8,15 @@ build-backend = "hatchling.build"
 # Specify which files and directories should be included in the build artifacts.
 # This is done to prevent adding unnecessary files to the releases.
 [tool.hatch.build.targets.sdist]
-include = [ "/src", "/requirements-build.txt" ]
+include = [
+  "/src",
+  "/requirements-build.txt",
+  "/release"
+]
 
 [project]
 name = "oss_eu_2022_tutorial_mv"
-version = "0.0.12"
+version = "0.0.13"
 
 authors = [
   { name="Martin Vrachev", email="mvrachev@vmware.com" },
