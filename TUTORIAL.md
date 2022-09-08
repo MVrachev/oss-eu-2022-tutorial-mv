@@ -126,6 +126,36 @@ workflow page you will see that `upload` is orange, click it -> choose
 `Review pending deployments` -> click `Release` -> click `Approve and deploy`.
 Now you can verify everything is as expected by going to [Test PyPI](https://test.pypi.org/).
 
+### Bonus content: add signing and release verification
+
+You can go a step further and introduce signing and signature verification of your
+releases. That will significantly improve the security of your project release
+processes.
+We have made the necessary changes introducing signatures and signing in the
+last 5 commits.
+Here are the steps you need to do in order to achieve that:
+1. Add `sigstore` to your `requirements-build.txt` file.
+2. Add the utility script we have added in the repository named `release`.
+Note: you can use `sigstore` manually as a CLI tool, but for the purpose of
+simplifying this tutorial we are going to use the `release` script.
+3. Create a `signatures` directory at the root of your project.
+4. Open `pyproject.toml` and add `/release` in the `tool.hatch.build.targets.sdist`
+section.
+5. Open `.github/workflows/release.yml` file and change the `List shas` step in
+the `build` job to the `Verify release signature` step as shown in the previous commits.
+6. Open `pyproject.toml` and bump the `version` attribute.
+7. Build your project with `python3 -m build`
+8. Sign your project by executing from the root folder: `./release sign {VERSION}`
+where `VERSION` is the incremented version inside `pyproject.toml`.
+9. Prepare all changes to be committed by adding them with `git add`.
+10. Commit all changes.
+11. Push the changes
+12. Tag the changes. Remember the tag name MUST start with `v`.
+13. Push the tags.
+14. Go to your project's GitHub page. The workflow should be automatically
+triggered and the `build` job should complete successfully. You can approve the
+`upload` job and release the next version of your project.
+
 This is all I wanted to show you in this tutorial!
 
 This tutorial was developed with the great help of [Jussi Kukkonen](https://github.com/jku)
